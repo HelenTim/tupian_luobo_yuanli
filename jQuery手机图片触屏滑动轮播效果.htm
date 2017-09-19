@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>jQuery手机图片触屏滑动轮播效果</title>
+
+<link type="text/css" href="file/style.css" rel="stylesheet">
+
+<script src="file/jquery-1.js"></script><script src="file/jquery.js"></script>
+<script type="text/javascript" src="file/jquery_002.js"></script>
+<script type="text/javascript" src="file/jquery_003.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	$(".img_gallery").hover(function(){
+		$("#btn_prev,#btn_next").fadeIn()
+	},function(){
+		$("#btn_prev,#btn_next").fadeOut()
+	});
+	
+	$dragBln = false;
+	
+	$(".main_img").touchSlider({
+		flexible : true,
+		speed : 10000,
+		btn_prev : $("#btn_prev"),
+		btn_next : $("#btn_next"),
+		paging : $(".point a"),
+		counter : function (e){
+			$(".point a").removeClass("on").eq(e.current-1).addClass("on");//图片顺序点切换
+			$(".img_font span").hide().eq(e.current-1).show();//图片文字切换
+		}
+	});
+	
+	$(".main_img").bind("mousedown", function() {
+		$dragBln = false;
+	});
+	
+	$(".main_img").bind("dragstart", function() {
+		$dragBln = true;
+	});
+	
+	$(".main_img a").click(function(){
+		if($dragBln) {
+			return false;
+		}
+	});
+	
+	timer = setInterval(function(){
+		$("#btn_next").click();
+	}, 15000);
+	
+	$(".img_gallery").hover(function(){
+		clearInterval(timer);
+	},function(){
+		timer = setInterval(function(){
+			$("#btn_next").click();
+		},15000);
+	});
+	
+	$(".main_img").bind("touchstart",function(){
+		clearInterval(timer);
+	}).bind("touchend", function(){
+		timer = setInterval(function(){
+			$("#btn_next").click();
+		}, 15000);
+	});
+	
+});
+</script>
+</head>
+<body>
+
+<div class="img_gallery">
+	<div class="point">
+		<a href="#" class="on">1</a>
+		<a href="#" class="">2</a>
+		<a href="#" class="">3</a>
+		<a href="#" class="">4</a>
+		<a href="#" class="">5</a>
+	</div>
+	<div class="main_img" style="">
+		<ul style="width: 964px; overflow: visible;">
+			<li style="float: none; display: block; position: absolute; top: 0px; left: 0px; width: 964px;"><span class="img_1"></span></li>
+			<li style="float: none; display: block; position: absolute; top: 0px; left: -3856px; width: 964px;"><span class="img_2"></span></li>
+			<li style="float: none; display: block; position: absolute; top: 0px; left: -2892px; width: 964px;"><span class="img_3"></span></li>
+			<li style="float: none; display: block; position: absolute; top: 0px; left: -1928px; width: 964px;"><span class="img_4"></span></li>
+			<li style="float: none; display: block; position: absolute; top: 0px; left: -964px; width: 964px;"><span class="img_5"></span></li>
+		</ul>
+		<a href="javascript:;" id="btn_prev" style="width: 964px; overflow: visible; display: inline;"></a>
+		<a href="javascript:;" id="btn_next" style="width: 964px; overflow: visible; display: inline;"></a>
+	</div>
+	<div class="img_font">
+		<span style="display: inline;">img 1/5</span>
+		<span style="display: none;">img 2/5</span>
+		<span style="display: none;">img 3/5</span>
+		<span style="display: none;">img 4/5</span>
+		<span style="display: none;">img 5/5</span>
+	</div>
+</div>
+
+
+</body></html>
